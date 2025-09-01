@@ -1,0 +1,15 @@
+# Firebase/Google Cloud
+firebase-service-account.json
+serviceAccountKey.json
+*-service-account.json
+
+# Environment variables
+.env
+.env.*
+
+# Dependencies
+node_modules/
+
+# Other sensitive files
+*.pem
+*.key

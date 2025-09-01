@@ -1,0 +1,94 @@
+{
+ "matchingQuestions": [
+   {
+     "id": 1,
+     "question": "Tell me about your ideal weekend. What does that look like for you?",
+     "category": "lifestyle",
+     "analysisTarget": "lifestyle preferences, energy levels, social vs solo preferences, activity types"
+   },
+   {
+     "id": 2,
+     "question": "What does a healthy relationship mean to you? Describe what you value most.",
+     "category": "relationship_values",
+     "analysisTarget": "relationship expectations, emotional maturity, core values, commitment style"
+   },
+   {
+     "id": 3,
+     "question": "How do you typically handle disagreements or conflicts with people you care about?",
+     "category": "communication",
+     "analysisTarget": "communication style, emotional intelligence, conflict resolution, maturity level"
+   },
+   {
+     "id": 4,
+     "question": "What's something you're genuinely passionate about right now? Why does it matter to you?",
+     "category": "interests_passions",
+     "analysisTarget": "interests, depth of character, motivations, intellectual engagement"
+   },
+   {
+     "id": 5,
+     "question": "Describe how you like to communicate with someone you're getting to know.",
+     "category": "communication_style",
+     "analysisTarget": "communication preferences, relationship pace, interaction style, openness level"
+   },
+   {
+     "id": 6,
+     "question": "What role do family and close friendships play in your life?",
+     "category": "social_priorities",
+     "analysisTarget": "family orientation, social priorities, relationship with others, support system importance"
+   },
+   {
+     "id": 7,
+     "question": "Where do you see yourself in 2-3 years? What are you working toward?",
+     "category": "future_goals",
+     "analysisTarget": "ambition level, life direction, goal alignment, career priorities, life planning"
+   },
+   {
+     "id": 8,
+     "question": "What would make you feel most appreciated and understood by someone?",
+     "category": "emotional_needs",
+     "analysisTarget": "love language, emotional needs, appreciation style, compatibility indicators"
+   },
+   {
+     "id": 9,
+     "question": "How important is humor and playfulness in your relationships? Describe your sense of humor.",
+     "category": "humor_compatibility",
+     "analysisTarget": "humor style, playfulness level, comedic preferences, relationship lightness"
+   },
+   {
+     "id": 10,
+     "question": "Are you more of a planner who likes structure and routines, or do you prefer being spontaneous and going with the flow?",
+     "category": "decision_making",
+     "analysisTarget": "planning vs spontaneity, structure preference, flexibility, decision-making style"
+   },
+   {
+     "id": 11,
+     "question": "How do you approach solving problems - do you analyze and break things down step by step, or do you trust your intuition and gut feelings?",
+     "category": "intellectual_style",
+     "analysisTarget": "analytical vs intuitive thinking, problem-solving approach, cognitive style, decision process"
+   },
+   {
+     "id": 12,
+     "question": "What are your thoughts on having children in the future? How important is this to you?",
+     "category": "family_planning",
+     "analysisTarget": "children preferences, family planning, parenting desires, life priorities"
+   },
+   {
+     "id": 13,
+     "question": "How important is it that your partner lives nearby? Are you open to long-distance relationships or relocating for love?",
+     "category": "location_flexibility",
+     "analysisTarget": "geographic preferences, distance tolerance, relocation willingness, commitment level"
+   },
+   {
+     "id": 14,
+     "question": "What role does religion, spirituality, or personal beliefs play in your life and relationships?",
+     "category": "beliefs_spirituality",
+     "analysisTarget": "religious importance, spiritual beliefs, values alignment, lifestyle impact"
+   },
+   {
+     "id": 15,
+     "question": "In relationships and social situations, do you naturally take the lead and initiate, or do you prefer when others take charge?",
+     "category": "leadership_style",
+     "analysisTarget": "leadership preference, initiative level, social roles, relationship dynamics"
+   }
+ ]
+}
