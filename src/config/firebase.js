@@ -1,6 +1,5 @@
 const admin = require('firebase-admin');
 
-// Initialize Firebase Admin SDK
 const initializeFirebase = () => {
   console.log('🔍 Starting Firebase initialization...');
   console.log('NODE_ENV:', process.env.NODE_ENV);
