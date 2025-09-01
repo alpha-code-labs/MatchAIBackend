@@ -1,16 +1,26 @@
 const admin = require('firebase-admin');
-const path = require('path');
 
 // Initialize Firebase Admin SDK
 const initializeFirebase = () => {
   try {
     // Check if Firebase is already initialized
     if (admin.apps.length === 0) {
-      const serviceAccountPath = path.join(process.cwd(), process.env.FIREBASE_SERVICE_ACCOUNT_KEY_PATH);
+      let serviceAccount;
+      
+      // Check if running in production (Azure)
+      if (process.env.NODE_ENV === 'production' && process.env.FIREBASE_SERVICE_ACCOUNT) {
+        // In production, parse from environment variable
+        serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+      } else {
+        // In development, use the file
+        const path = require('path');
+        const serviceAccountPath = path.join(process.cwd(), process.env.FIREBASE_SERVICE_ACCOUNT_KEY_PATH);
+        serviceAccount = require(serviceAccountPath);
+      }
       
       admin.initializeApp({
-        credential: admin.credential.cert(require(serviceAccountPath)),
-        databaseURL: process.env.FIREBASE_DATABASE_URL // Add this line
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: process.env.FIREBASE_DATABASE_URL
       });
       
       console.log('✅ Firebase Admin initialized successfully');
