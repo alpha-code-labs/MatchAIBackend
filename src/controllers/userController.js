@@ -1550,6 +1550,9 @@ const updatePWAStatus = async (req, res) => {
 const updatePushSubscription = async (req, res) => {
   try {
     const { email, pushSubscription, pushNotificationsEnabled } = req.body;
+    console.log(email)
+    console.log(pushSubscription)
+    console.log(pushNotificationsEnabled)
 
     // Validate required fields
     if (!email) {
