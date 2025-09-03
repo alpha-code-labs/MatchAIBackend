@@ -5,7 +5,7 @@ const generateChatId = (userId1, userId2) => {
   return [userId1, userId2].sort().join('_');
 };
 
-// Helper function to get user basic info to test the work and test the work further
+// Helper function to get user basic info to test the work and test the work further and test the work further
 const getUserBasicInfo = async (userId) => {
   try {
     const userDoc = await db.collection('users').doc(userId).get();
