@@ -1547,83 +1547,6 @@ const updatePWAStatus = async (req, res) => {
   }
 };
 
-const updatePushSubscription = async (req, res) => {
-  try {
-    const { email, pushSubscription, pushNotificationsEnabled } = req.body;
-    console.log(email)
-    console.log(pushSubscription)
-    console.log(pushNotificationsEnabled)
-
-    // Validate required fields
-    if (!email) {
-      return res.status(400).json({
-        status: 'error',
-        message: 'Email is required'
-      });
-    }
-
-    // Find user by email
-    const usersRef = db.collection('users');
-    const snapshot = await usersRef.where('email', '==', email).get();
-
-    if (snapshot.empty) {
-      return res.status(404).json({
-        status: 'error',
-        message: 'User not found'
-      });
-    }
-
-    const userDoc = snapshot.docs[0];
-    
-    // Prepare update data
-    const updateData = {
-      updatedAt: new Date()
-    };
-
-    // Update push subscription
-    if (pushSubscription !== undefined) {
-      updateData.pushSubscription = pushSubscription;
-      updateData.pushSubscriptionUpdatedAt = new Date();
-    }
-
-    // Update push notifications enabled flag
-    if (pushNotificationsEnabled !== undefined) {
-      updateData.pushNotificationsEnabled = pushNotificationsEnabled;
-      if (!pushNotificationsEnabled) {
-        updateData.notificationPermissionDenied = true;
-        updateData.pushSubscription = null;
-      } else {
-        updateData.notificationPermissionDenied = false;
-      }
-    }
-
-    // Update user document
-    await userDoc.ref.update(updateData);
-
-    // Get updated user data
-    const updatedUserSnapshot = await userDoc.ref.get();
-    const updatedUserData = updatedUserSnapshot.data();
-
-    // Return success response
-    res.status(200).json({
-      status: 'success',
-      message: 'Push subscription updated successfully',
-      data: {
-        user: updatedUserData
-      }
-    });
-
-  } catch (error) {
-    console.error('❌ Push subscription update error:', error);
-    
-    res.status(500).json({
-      status: 'error',
-      message: 'Push subscription update failed',
-      error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
-    });
-  }
-};
-
 const updateTourStatus = async (req, res) => {
   try {
     
@@ -1700,6 +1623,5 @@ module.exports = {
   updateQuestions,
   updateBio,
   updatePWAStatus,
-  updatePushSubscription,
   updateTourStatus
 };
