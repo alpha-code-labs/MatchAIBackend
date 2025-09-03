@@ -1,17 +1,9 @@
 const { Resend } = require('resend');
 const jwt = require('jsonwebtoken');
-const webpush = require('web-push');
 
 class EmailNotificationService {
   constructor() {
     this.resend = new Resend(process.env.RESEND_API_KEY);
-    
-    // Configure web-push with VAPID keys
-    webpush.setVapidDetails(
-      'mailto:' + process.env.VAPID_EMAIL,
-      process.env.VAPID_PUBLIC_KEY,
-      process.env.VAPID_PRIVATE_KEY
-    );
   }
 
   /**
@@ -46,95 +38,13 @@ class EmailNotificationService {
   }
 
   /**
-   * Send push notification
-   */
-  async sendPushNotification(subscription, payload) {
-    try {
-      if (!subscription) {
-        console.log('No push subscription available');
-        return null;
-      }
-
-      const result = await webpush.sendNotification(subscription, JSON.stringify(payload));
-      console.log('✅ Push notification sent successfully');
-      return result;
-    } catch (error) {
-      console.error('❌ Error sending push notification:', error);
-      
-      // Handle expired subscriptions
-      if (error.statusCode === 410) {
-        console.log('Push subscription has expired or is invalid');
-        // Could trigger subscription removal from database here
-        return null;
-      }
-      
-      throw error;
-    }
-  }
-
-  /**
-   * Send match push notification
-   */
-  async sendMatchPushNotification(user, matchCount) {
-    try {
-      if (!user.pushSubscription) {
-        return null;
-      }
-
-      const payload = {
-        title: 'Match.AI - New Matches! 💕',
-        body: `You have ${matchCount} new match${matchCount > 1 ? 'es' : ''} waiting for you!`,
-        icon: '/icon-192x192.png',
-        badge: '/icon-192x192.png',
-        data: {
-          url: '/dashboard#matches',
-          type: 'match_notification'
-        }
-      };
-
-      return await this.sendPushNotification(user.pushSubscription, payload);
-    } catch (error) {
-      console.error('❌ Error sending match push notification:', error);
-      return null;
-    }
-  }
-
-  /**
-   * Send message push notification
-   */
-  async sendMessagePushNotification(user, senderName, messagePreview) {
-    try {
-      if (!user.pushSubscription) {
-        return null;
-      }
-
-      const payload = {
-        title: `New message from ${senderName} 💬`,
-        body: messagePreview || 'You have a new message',
-        icon: '/icon-192x192.png',
-        badge: '/icon-192x192.png',
-        data: {
-          url: '/dashboard#messages',
-          type: 'message_notification'
-        }
-      };
-
-      return await this.sendPushNotification(user.pushSubscription, payload);
-    } catch (error) {
-      console.error('❌ Error sending message push notification:', error);
-      return null;
-    }
-  }
-
-  /**
-   * Send generic notification email (with push notification)
+   * Send generic notification email
    */
   async sendGenericNotificationEmail(emailData) {
     try {
 
       const dashboardLink = this.generateDashboardLink(emailData.user.id, emailData.user.email);
 
-      // Send email
       const resendEmailData = {
         from: 'notifications@notifications.alphacodelabs.com',
         to: emailData.user.email,
@@ -142,56 +52,16 @@ class EmailNotificationService {
         html: this.generateGenericEmailTemplate(emailData, dashboardLink)
       };
 
-      const emailResult = await this.resend.emails.send(resendEmailData);
+      const result = await this.resend.emails.send(resendEmailData);
       
-      if (!emailResult.data?.id) {
+      if (!result.data?.id) {
         throw new Error('Email send failed - no result ID returned');
       }
-
-      // Also send push notification if user has subscription
-      if (emailData.user.pushSubscription && emailData.user.pushNotificationsEnabled) {
-        await this.sendMatchPushNotification(emailData.user, emailData.notificationCount);
-      }
       
-      return emailResult;
+      return result;
 
     } catch (error) {
       console.error('❌ Error sending generic notification email:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Send message notification (instant push + optional email)
-   */
-  async sendMessageNotification(recipientUser, senderName, messagePreview, sendEmail = false) {
-    try {
-      const results = {
-        push: null,
-        email: null
-      };
-
-      // Send push notification immediately if enabled
-      if (recipientUser.pushSubscription && recipientUser.pushNotificationsEnabled) {
-        results.push = await this.sendMessagePushNotification(
-          recipientUser, 
-          senderName, 
-          messagePreview
-        );
-      }
-
-      // Send email if requested
-      if (sendEmail) {
-        const emailData = {
-          user: recipientUser,
-          notificationCount: 1
-        };
-        results.email = await this.sendGenericNotificationEmail(emailData);
-      }
-
-      return results;
-    } catch (error) {
-      console.error('❌ Error sending message notification:', error);
       throw error;
     }
   }
