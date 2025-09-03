@@ -9,8 +9,9 @@ const {
   updateQuestions,
   updateBio,
   verifyEmailToken,
-  updatePWAStatus,  // PWA status update function
-  updateTourStatus  // ✅ ADD: Tour status update function
+  updatePWAStatus,
+  updatePushSubscription,  // ADD THIS IMPORT
+  updateTourStatus
 } = require('../controllers/userController');
 
 // Test route
@@ -46,7 +47,10 @@ router.put('/update-bio', updateBio);
 // PWA status update route
 router.put('/pwa-status', updatePWAStatus);
 
-// ✅ NEW: Tour status update route
+// Push subscription update route - ADD THIS LINE
+router.put('/push-subscription', updatePushSubscription);
+
+// Tour status update route
 router.patch('/tour-status', updateTourStatus);
 
 module.exports = router;
