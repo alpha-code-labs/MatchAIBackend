@@ -574,21 +574,10 @@ class MatchingService {
         user2_notified: false,
         email_sent_user1: false,
         email_sent_user2: false,
-        // NEW: Like email tracking flags
-        // like_email_pending_user1: false,
-        // like_email_pending_user2: false,
-        // like_email_sent_user1: false,
-        // like_email_sent_user2: false,
-
-        // NEW: Love email tracking flags
-        // love_email_pending_user1: false,
-        // love_email_pending_user2: false,
-        // love_email_sent_user1: false,
-        // love_email_sent_user2: false,
-        // NEW: Interest email tracking flags
-        // NEW: Generic notification tracking flags
-        notification_pending_user1: false,
-        notification_pending_user2: false,
+        
+        // FIXED: Generic notification tracking flags
+        notification_pending_user1: true, // Changed from false to true
+        notification_pending_user2: match.match_type === 'mutual_algorithm', // Only notify user2 for mutual matches initially
         notification_sent_user1: false,
         notification_sent_user2: false
 
