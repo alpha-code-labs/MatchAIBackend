@@ -755,8 +755,6 @@ const registerUser = async (req, res) => {
       profilePictureFromGoogle
     } = req.body;
 
-    // Log original values from form
-
     // Validate required fields
     if (!firstName || !lastName || !age || !gender || !interestedIn || !city || !lookingFor || !relationshipStatus || !email) {
       return res.status(400).json({
@@ -780,9 +778,14 @@ const registerUser = async (req, res) => {
 
     // Check if phone number already exists (only if phone is provided)
     if (phone && phone.trim() !== '') {
-      const existingPhoneSnapshot = await usersRef.where('phone', '==', phone).get();
+      // Extract just the digits from the phone number for comparison
+      const phoneDigitsOnly = phone.replace(/\D/g, '');
       
-      if (!existingPhoneSnapshot.empty) {
+      // Check both formats: with country code and without
+      const existingPhoneSnapshot1 = await usersRef.where('phone', '==', phone).get();
+      const existingPhoneSnapshot2 = await usersRef.where('phone', '==', phoneDigitsOnly).get();
+      
+      if (!existingPhoneSnapshot1.empty || !existingPhoneSnapshot2.empty) {
         return res.status(409).json({
           status: 'error',
           message: 'An account with this phone number already exists'
