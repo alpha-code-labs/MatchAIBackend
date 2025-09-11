@@ -765,6 +765,17 @@ const registerUser = async (req, res) => {
       });
     }
 
+    // Check if user already exists with this email
+    const usersRef = db.collection('users');
+    const existingUserSnapshot = await usersRef.where('email', '==', email).get();
+
+    if (!existingUserSnapshot.empty) {
+      return res.status(409).json({
+        status: 'error',
+        message: 'An account with this email already exists'
+      });
+    }
+
     // Generate user ID
     const userId = uuidv4();
 
@@ -878,7 +889,6 @@ const registerUser = async (req, res) => {
     });
   }
 };
-
 const updateUserProfile = async (req, res) => {
   try {
     const {
