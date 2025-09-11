@@ -765,8 +765,10 @@ const registerUser = async (req, res) => {
       });
     }
 
-    // Check if user already exists with this email
+    // Get users collection reference
     const usersRef = db.collection('users');
+
+    // Check if user already exists with this email
     const existingUserSnapshot = await usersRef.where('email', '==', email).get();
 
     if (!existingUserSnapshot.empty) {
@@ -774,6 +776,18 @@ const registerUser = async (req, res) => {
         status: 'error',
         message: 'An account with this email already exists'
       });
+    }
+
+    // Check if phone number already exists (only if phone is provided)
+    if (phone && phone.trim() !== '') {
+      const existingPhoneSnapshot = await usersRef.where('phone', '==', phone).get();
+      
+      if (!existingPhoneSnapshot.empty) {
+        return res.status(409).json({
+          status: 'error',
+          message: 'An account with this phone number already exists'
+        });
+      }
     }
 
     // Generate user ID
@@ -880,7 +894,7 @@ const registerUser = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('❌ Registration error:', error);
+    console.error('Registration error:', error);
     
     res.status(500).json({
       status: 'error',
@@ -889,6 +903,7 @@ const registerUser = async (req, res) => {
     });
   }
 };
+
 const updateUserProfile = async (req, res) => {
   try {
     const {
