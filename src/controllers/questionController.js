@@ -307,7 +307,6 @@ Please ensure all scores are realistic (0-100) and based on evidence from their 
     const response = await anthropic.messages.create({
       model: 'claude-3-5-sonnet-20241022',
       max_tokens: 2000,
-      temperature: 0.7,
       messages: [
         {
           role: 'user',
