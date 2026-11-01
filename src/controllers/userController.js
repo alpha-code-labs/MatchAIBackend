@@ -1288,6 +1288,7 @@ Return a JSON object with this exact structure:
       body: JSON.stringify({
         model: 'claude-3-5-sonnet-20241022',
         max_tokens: 2000,
+        temperature: 0.7,
         messages: [
           {
             role: 'user',
